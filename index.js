@@ -1,4 +1,8 @@
-(async () => {
+let minutes = 15
+let waitTime = minutes * 60 * 1000
+setInterval(async () => {
+
+  log("STARTING SCRIPT")
 
   function log(msg) {
     let d = new Date()
@@ -95,4 +99,4 @@ Errors below\n${e}`
 
   
 
-})();
+}, waitTime);
