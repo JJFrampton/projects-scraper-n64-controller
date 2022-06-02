@@ -1,4 +1,5 @@
-let minutes = 15
+//let minutes = 15
+let minutes = 1
 let waitTime = minutes * 60 * 1000
 setInterval(async () => {
 
