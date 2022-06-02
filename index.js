@@ -1,5 +1,4 @@
-//let minutes = 15
-let minutes = 1
+let minutes = 15
 let waitTime = minutes * 60 * 1000
 setInterval(async () => {
 
@@ -58,8 +57,7 @@ setInterval(async () => {
     button = await button.jsonValue()
     // console.log(button)
   
-    //const buttonRegex = new RegExp('Sold out');
-    const buttonRegex = new RegExp('Available');
+    const buttonRegex = new RegExp('Sold out');
     sameButton = buttonRegex.test(button)
     log("Button has changed : " + !sameButton)
     if (!sameButton) {throw new Error("Button has changed : " + !sameButton)}
