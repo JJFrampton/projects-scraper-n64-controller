@@ -15,6 +15,7 @@
   // Pass can be generated from uk google account	
   // under security > Signing in to google
   // https://myaccount.google.com/
+  const toUser = process.env.TO_USER
   const user = process.env.GMAIL_USER
   const pass = process.env.GMAIL_PASS
   var nodemailer = require('nodemailer');
@@ -40,17 +41,14 @@
     log("Text has changed : " + !sameText)
     if (!sameText) {throw new Error("Text has changed : " + !sameText)}
   
-    // Test error
-    // let searchButton = 'button.goRNPN'
-    let searchButton = 'button.dddxxgoRNPN'
+    let searchButton = 'button.goRNPN'
     await page.waitForSelector(searchButton)
     button = await page.$(searchButton)
     button = await button.getProperty('innerHTML')
     button = await button.jsonValue()
     // console.log(button)
   
-    //const buttonRegex = new RegExp('Sold out');
-    const buttonRegex = new RegExp('XXXX');
+    const buttonRegex = new RegExp('Sold out');
     sameButton = buttonRegex.test(button)
     log("Button has changed : " + !sameButton)
     if (!sameButton) {throw new Error("Button has changed : " + !sameButton)}
@@ -71,7 +69,7 @@
     var mailOptions = {
       // from: testAccount.user,
       from: user,
-      to: 'josephjamesframpton@gmail.com',
+      to: toUser,
       subject: 'N64 Controller Might Be Available Now !',
       text: `One of the following elements being tracked on the page has changed, or an error was encountered during parsing.
 Button changed : ${!sameButton}
