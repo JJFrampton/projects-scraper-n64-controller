@@ -26,7 +26,12 @@ setInterval(async () => {
   var nodemailer = require('nodemailer');
 
   let url = 'https://www.nintendo.com/en-ca/store/products/nintendo-64-controller/'
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    'args' : [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ]
+  });
   const page = await browser.newPage();
   await page.goto(url);
   
