@@ -1,38 +1,100 @@
-const puppeteer = require('puppeteer');
-
 (async () => {
+
+  function log(msg) {
+    let d = new Date()
+    let zone = d.getTimezoneOffset() / 60
+    d.setHours(d.getHours() - zone)
+    d = d.toISOString()
+    d = d.split('.')[0]
+    msg = `${d} - ${msg}`
+    console.info(msg)
+  }
+
+  const puppeteer = require('puppeteer');
+  require('dotenv').config()
+  // Pass can be generated from uk google account	
+  // under security > Signing in to google
+  // https://myaccount.google.com/
+  const user = process.env.GMAIL_USER
+  const pass = process.env.GMAIL_PASS
+  var nodemailer = require('nodemailer');
+
+  let url = 'https://www.nintendo.com/en-ca/store/products/nintendo-64-controller/'
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto('https://www.nintendo.com/en-ca/store/products/nintendo-64-controller/');
-
-  //await page.waitForSelector('span[data-testid="helperText"]')
-  //let text = await page.$('span[data-testid="helperText"]')
-  //text = (await text.getProperty('textContent')).jsonValue()
-  //console.log(text)
-
+  await page.goto(url);
   
-  let searchText = 'p.cWuGKg.iqhwUx'
-  await page.waitForSelector(searchText)
-  let text = await page.$(searchText)
-  text = await text.getProperty('innerHTML')
-  text = await text.jsonValue()
-  console.log(text)
+  let sameButton = true
+  let sameText = true
+  let button, text
+  try {
+    let searchText = 'p.cWuGKg.iqhwUx'
+    await page.waitForSelector(searchText)
+    text = await page.$(searchText)
+    text = await text.getProperty('innerHTML')
+    text = await text.jsonValue()
+    // console.log(text)
+  
+    const textRegex = new RegExp('This item is currently unavailable');
+    sameText = textRegex.test(text)
+    log("Text has changed : " + !sameText)
+    if (!sameText) {throw new Error("Text has changed : " + !sameText)}
+  
+    // Test error
+    // let searchButton = 'button.goRNPN'
+    let searchButton = 'button.dddxxgoRNPN'
+    await page.waitForSelector(searchButton)
+    button = await page.$(searchButton)
+    button = await button.getProperty('innerHTML')
+    button = await button.jsonValue()
+    // console.log(button)
+  
+    //const buttonRegex = new RegExp('Sold out');
+    const buttonRegex = new RegExp('XXXX');
+    sameButton = buttonRegex.test(button)
+    log("Button has changed : " + !sameButton)
+    if (!sameButton) {throw new Error("Button has changed : " + !sameButton)}
+  
+    await page.screenshot({ path: 'n64-controller.png' });
+  
+  } catch(e) {
 
-  const textRegex = new RegExp('This item is currently unavailable');
-  console.log(textRegex.test(text))
+    log("Sending email")
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: user,
+        pass: pass
+      }
+    });
+    
+    var mailOptions = {
+      // from: testAccount.user,
+      from: user,
+      to: 'josephjamesframpton@gmail.com',
+      subject: 'N64 Controller Might Be Available Now !',
+      text: `One of the following elements being tracked on the page has changed, or an error was encountered during parsing.
+Button changed : ${!sameButton}
+Button : \n${button}
+Text changed : ${!sameText}
+Text : \n${text}
+Errors below\n${e}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        log("Email failed - " + error);
+      } else {
+        log("Email sent - " + info.response);
+      }
+    });
 
-  let searchButton = 'button.goRNPN'
-  await page.waitForSelector(searchButton)
-  let button = await page.$(searchButton)
-  button = await button.getProperty('innerHTML')
-  button = await button.jsonValue()
-  console.log(button)
-
-  const buttonRegex = new RegExp('Sold out');
-  console.log(buttonRegex.test(button))
-
-  await page.screenshot({ path: 'n64-controller.png' });
+    // Send discord message
+  }
 
   await browser.close();
+
+
+  
 
 })();
