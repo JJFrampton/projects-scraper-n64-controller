@@ -3,6 +3,24 @@
 ## Intention
 This project is designed to watch a site for changes to the html elements on the page. Changes are determined by a loose regex match to any part of the element. If changes are found then an email notification is sent out along with a link to the site and the changed elements.
 
+## Install
+```
+  npm install
+```
+## Local Run
+```
+  npm start
+```
+## Heroku Run
+Using Heroku cli
+```
+  heroku scale web=0 run=1
+```
+Where "run" is an arbitrary tag mapped to a command defined in the Procfile
+
+Need to scale "web" (default process) down to zero as web requires atrributes of a full server  
+ie. a response a path '/', a binding to a port, etc
+
 ## Dependencies
 
 #### Dotenv
@@ -22,25 +40,7 @@ Nodemailer is used to send email notifications.
 
 [More](https://nodemailer.com/about/)
 
-## Install
-```
-  npm install
-```
-## Local Run
-```
-  npm start
-```
-## Prod Run
-Using Heroku cli
-```
-  heroku scale web=0 run=1
-```
-Where "run" is an arbitrary tag mapped to a command defined in the Procfile
-
-Need to scale "web" (default process) down to zero as web requires atrributes of a full server  
-ie. a response a path '/', a binding to a port, etc
-
-## Resources
+## Other Resources
 
 [Heroku process types](https://devcenter.heroku.com/articles/nodejs-support#default-web-process-type)
 
