@@ -1,7 +1,7 @@
 # N64 Controller Availability Notifier (Site Scraper)
 
-## Intention
-This project is designed to watch a site for changes to the html elements on the page. Changes are determined by a loose regex match to any part of the element. If changes are found then an email notification is sent out along with a link to the site and the changed elements.
+## Description
+This project is designed to watch a site for changes to the html elements on the page. Changes are determined by a failing (loose) regex match, targeting any part of the element. If changes are found then an email notification is sent out along with a link to the site and the changed elements.
 
 ## Install
 ```
@@ -31,7 +31,7 @@ Dotenv is used to simplify injection of environment variables during local runs,
 #### Puppeteer
 Puppeteer is used to retrieve rendered elements on the final pages displayed.
 
-Puppeteer is needed, rather than an xml parser, due to the numerous calls made by the recieved javascript from the initial call. For this specific site, the html that is initially retrieved does not include the required information. This initial html references scripts which are then retrieved and executed. Somewhere within the calls the scripts (which have been minified / uglified) make, there are calls which result in the data that we do need. Puppeteer allows us to do all of this automatically as a browser would (Puppeteer = highlevel api to control headless chrome(ium) browser).
+Puppeteer is needed, rather than an xml parser, due to the numerous calls made by the recieved javascript from the initial call. For this specific site, the html that is initially retrieved does not include the required information. This initial html references scripts which are then retrieved and executed. Somewhere within the functions of these scripts (which have been minified / uglified), there are calls which retrieve the data that we do need. Puppeteer allows us to do all of this automatically as a browser would (Puppeteer = highlevel api to control headless chrome(ium) browser).
 
 [More](https://github.com/puppeteer/puppeteer#readme)
 
