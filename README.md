@@ -23,22 +23,22 @@ ie. a response a path '/', a binding to a port, etc
 
 ## Dependencies
 
-#### Dotenv
-Dotenv is used to simplify injection of environment variables during local runs, in production these would be pulled from the host machines environment.
+* #### Dotenv
+  Used to simplify injection of environment variables during local runs, in production these would be pulled from the host machines environment.
 
-[More](https://github.com/motdotla/dotenv#readme)
+  [More](https://github.com/motdotla/dotenv#readme)
 
-#### Puppeteer
-Puppeteer is used to retrieve rendered elements on the final pages displayed.
+* #### Puppeteer
+  Used to retrieve rendered elements on the final pages displayed.
 
-Puppeteer is needed, rather than an xml parser, due to the numerous calls made by the recieved javascript from the initial call. For this specific site, the html that is initially retrieved does not include the required information. This initial html references scripts which are then retrieved and executed. Somewhere within the functions of these scripts (which have been minified / uglified), there are calls which retrieve the data that we do need. Puppeteer allows us to do all of this automatically as a browser would (Puppeteer = highlevel api to control headless chrome(ium) browser).
+  Puppeteer is needed, rather than an xml parser, due to the numerous calls made by the recieved javascript from the initial call. For this specific site, the html that is initially retrieved does not include the required information. This initial html references scripts which are then retrieved and executed. Somewhere within the functions of these scripts (which have been minified / uglified), there are calls which retrieve the data that we do need. Puppeteer allows us to do all of this automatically as a browser would (Puppeteer = highlevel api to control headless chrome(ium) browser).
 
-[More](https://github.com/puppeteer/puppeteer#readme)
+  [More](https://github.com/puppeteer/puppeteer#readme)
 
-#### Nodemailer
-Nodemailer is used to send email notifications.
+* #### Nodemailer
+  Used to send email notifications.
 
-[More](https://nodemailer.com/about/)
+  [More](https://nodemailer.com/about/)
 
 ## Other Resources
 
